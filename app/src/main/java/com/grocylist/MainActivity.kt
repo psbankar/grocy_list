@@ -13,6 +13,13 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+
+//todo toolbar
+//todo menus(sort)
+//todo animations
+//todo Persistance
+//todo dialogs
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var drawerLayout: DrawerLayout
@@ -26,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        startActivity(Intent(this, StockOverviewActivity::class.java))
         val user = Firebase.auth.currentUser
 
         stockOverviewCard = findViewById(R.id.stock_overview_card)

@@ -52,7 +52,7 @@ class FindStoresActivity : AppCompatActivity() {
 //        "shoe_store",
 //        "shopping_mall",
 //        "store",
-        "supermarket"
+//        "supermarket"
     )
 
 
@@ -156,44 +156,41 @@ class FindStoresActivity : AppCompatActivity() {
 
     private fun getNearbyPlaces(location: Location) {
 //        val apiKey = this.getString(R.string.google_maps_key)
-        placeType.forEach {
-            placesService.nearbyPlaces(
-                apiKey = BuildConfig.GOOGLE_MAPS_API_KEY,
-                location = "${location.latitude},${location.longitude}",
-                radiusInMeters = 2000,
-                placeType = "supermarket"
-            ).enqueue(
-                object : Callback<NearbyPlacesResponse> {
-                    override fun onFailure(call: Call<NearbyPlacesResponse>, t: Throwable) {
-                        Log.e(TAG, "Failed to get nearby places", t)
-                    }
-
-                    override fun onResponse(
-                        call: Call<NearbyPlacesResponse>,
-                        response: Response<NearbyPlacesResponse>
-                    ) {
-                        if (!response.isSuccessful) {
-                            Log.e(TAG, "Failed to get nearby places")
-                            return
-                        }
-
-                        val places = response.body()?.results ?: emptyList()
-                        this@FindStoresActivity.places?.addAll(places)
-
-
-                    }
+        placesService.nearbyPlaces(
+            apiKey = BuildConfig.GOOGLE_MAPS_API_KEY,
+            location = "${location.latitude},${location.longitude}",
+            radiusInMeters = 10000,
+            placeType = "store"
+        ).enqueue(
+            object : Callback<NearbyPlacesResponse> {
+                override fun onFailure(call: Call<NearbyPlacesResponse>, t: Throwable) {
+                    Log.e(TAG, "Failed to get nearby places", t)
                 }
-            )
-        }
 
-        Log.d(TAG,places.toString())
-        addMarkers()
+                override fun onResponse(
+                    call: Call<NearbyPlacesResponse>,
+                    response: Response<NearbyPlacesResponse>
+                ) {
+                    if (!response.isSuccessful) {
+                        Log.e(TAG, "Failed to get nearby places")
+                        return
+                    }
+
+                    val places = response.body()?.results ?: emptyList()
+                    this@FindStoresActivity.places?.addAll(places)
+                    Log.d(TAG,places.toString())
+                    addMarkers()
+                }
+            }
+        )
+
+
 
     }
 
     private fun addMarkers() {
         places?.forEach { place ->
-            val marker = map?.addMarker(
+            map?.addMarker(
                 MarkerOptions()
                     .title(place.name)
                     .position(place.geometry.location.latLng)
