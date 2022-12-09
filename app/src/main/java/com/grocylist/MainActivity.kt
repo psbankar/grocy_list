@@ -2,11 +2,14 @@ package com.grocylist
 
 import android.content.Intent
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.MenuItem
-import android.widget.ImageView
+import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
-
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +52,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var text2: TextView
     lateinit var text3: TextView
     var expCount = 0
+    private var tts: TextToSpeech? = null
+    private var btnSpeak: ImageButton? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         navView = findViewById(R.id.navView)
 //        startActivity(Intent(this, StockOverviewActivity::class.java))
         val user = Firebase.auth.currentUser
-
+        btnSpeak = findViewById(R.id.volumebutton)
         db = Firebase.firestore
         text1 = findViewById(R.id.text1)
         text2 = findViewById(R.id.text2)
@@ -134,6 +140,17 @@ class MainActivity : AppCompatActivity() {
             .into(profileImg)
         username.setText(user?.displayName)
 
+        tts = TextToSpeech(
+            applicationContext
+        ) { status ->
+            if (status != TextToSpeech.ERROR) {
+                tts?.setLanguage(Locale.UK)
+            }
+
+            btnSpeak!!.setOnClickListener{speakout()}
+        }
+
+
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.StockOverviewmenu -> {
@@ -166,7 +183,10 @@ class MainActivity : AppCompatActivity() {
         currentUser = auth.currentUser
         updateUI(currentUser)
     }
-
+    private fun speakout(){
+        val text = text1!!.text.toString()
+        tts!!.speak(text,TextToSpeech.QUEUE_FLUSH,null,"")
+    }
     private fun updateUI(user: FirebaseUser?) {
         if(user==null) {
             startActivity(Intent(this, LoginActivity::class.java))
