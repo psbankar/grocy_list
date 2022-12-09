@@ -93,7 +93,7 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
             view.findViewById<TextView>(R.id.title).text =
                 list[position].data?.get("name").toString()
             view.findViewById<TextView>(R.id.amount).text =
-                list[position].data?.get("price").toString()
+                list[position].data?.get("amount").toString() + " " + list[position].data?.get("qty").toString()
             if (list[position].data?.get("expiry_date") != null) {
                 val date = (list[position].data?.get("expiry_date") as Timestamp).toDate()
                 val sdf = SimpleDateFormat("MM/dd/yyyy")
@@ -101,6 +101,16 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
                 view.findViewById<TextView>(R.id.expiry_date).text =
                     newdate.toString()
             }
+            view.findViewById<TextView>(R.id.price).text =
+                list[position].data?.get("price").toString()
+            if (list[position].data?.get("date_purchased") != null) {
+                val date = (list[position].data?.get("date_purchased") as Timestamp).toDate()
+                val sdf = SimpleDateFormat("MM/dd/yyyy")
+                val purchasedate = sdf.format(date)
+                view.findViewById<TextView>(R.id.datPurchased).text =
+                    purchasedate.toString()
+            }
+
         }
     }
 

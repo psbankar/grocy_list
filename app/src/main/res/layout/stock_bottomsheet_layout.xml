@@ -6,12 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="392dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
 
         android:paddingTop="40dp"
@@ -35,70 +37,44 @@
             android:textColor="#0C0C0C"
             android:textStyle="italic" />
 
-        <LinearLayout
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#673AB7"
+
+        android:elevation="10dp"
+
+        android:orientation="vertical">
+
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="51dp"
-            android:orientation="horizontal" />
+            android:layout_height="wrap_content"
+            android:text="Amount"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#050505"
+            android:textColorHighlight="@android:color/background_dark"
+            android:textStyle="bold|italic" />
+
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:textAlignment="center"
+            android:textColor="#050505" />
+
 
 
     </LinearLayout>
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#673AB7"
-            android:dividerPadding="10dp"
-            android:elevation="10dp"
-            android:gravity="bottom"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="126dp"
-                android:layout_height="wrap_content"
-                android:text="Amount"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#050505"
-                android:textColorHighlight="@android:color/background_dark"
-                android:textStyle="bold|italic" />
-
-            <TextView
-                android:id="@+id/amount"
-                android:layout_width="125dp"
-                android:layout_height="39dp"
-                android:textAlignment="center"
-                android:textColor="#050505" />
 
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#673AB7"
-            android:orientation="vertical">
-
-        <TextView
-                android:layout_width="126dp"
-                android:layout_height="wrap_content"
-                android:text="Expiry Date"
-                android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#050505"
-            android:textColorHighlight="@android:color/background_dark"
-            android:textStyle="bold|italic"/>
-
-            <TextView
-                android:id="@+id/expiry_date"
-                android:layout_width="125dp"
-                android:layout_height="39dp"
-                android:textAlignment="center"
-                android:textColor="#050505" />
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,7 +82,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="126dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Item Price"
                 android:textAlignment="center"
@@ -117,22 +93,68 @@
 
             <TextView
                 android:id="@+id/price"
-                android:layout_width="125dp"
-                android:layout_height="39dp"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
                 android:textAlignment="center"
                 android:textColor="#050505" />
 
 
         </LinearLayout>
-    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#673AB7"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Purchased Date"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#050505"
+                android:textColorHighlight="@android:color/background_dark"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/datPurchased"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:textAlignment="center"
+                android:textColor="#050505" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#673AB7"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Expiry Date"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#050505"
+                android:textColorHighlight="@android:color/background_dark"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/expiry_date"
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:textAlignment="center"
+                android:textColor="#050505" />
+
+
+        </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="69dp"
-        android:orientation="horizontal"></LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -141,101 +163,117 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="10dp"
+            android:paddingLeft="20dp"
             android:paddingEnd="10dp"
-            android:text="Button" />
+            android:text="Consume" />
 
         <Button
             android:id="@+id/button6"
-            style="ro"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="10dp"
+            android:paddingLeft="20dp"
             android:paddingEnd="10dp"
-            android:text="Button" />
+            android:paddingRight="10dp"
+            android:text="Delete" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add to Shopping List"
+            android:textAlignment="center" />
     </LinearLayout>
 
 
     <!--    <com.google.android.material.card.MaterialCardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="16dp"-->
-<!--        app:cardCornerRadius="24dp">-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="16dp"-->
+    <!--        app:cardCornerRadius="24dp">-->
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical">-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/title"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="16dp"-->
-<!--                android:textColor="?attr/colorPrimary"-->
-<!--                android:textSize="32sp" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/title"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:padding="16dp"-->
+    <!--                android:textColor="?attr/colorPrimary"-->
+    <!--                android:textSize="32sp" />-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Product Overview" />-->
-<!--        </LinearLayout>-->
+    <!--            <TextView-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Product Overview" />-->
+    <!--        </LinearLayout>-->
 
-<!--    </com.google.android.material.card.MaterialCardView>-->
-
-
-<!--    <com.google.android.material.card.MaterialCardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="16dp"-->
-<!--        app:cardCornerRadius="24dp">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/title"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="16dp"-->
-<!--                android:textColor="?attr/colorPrimary"-->
-<!--                android:textSize="32sp" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Product Overview" />-->
-<!--        </LinearLayout>-->
-
-<!--    </com.google.android.material.card.MaterialCardView>-->
+    <!--    </com.google.android.material.card.MaterialCardView>-->
 
 
-<!--    <com.google.android.material.card.MaterialCardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="16dp"-->
-<!--        app:cardCornerRadius="24dp">-->
+    <!--    <com.google.android.material.card.MaterialCardView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="16dp"-->
+    <!--        app:cardCornerRadius="24dp">-->
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical">-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/title"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="16dp"-->
-<!--                android:textColor="?attr/colorPrimary"-->
-<!--                android:textSize="32sp" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/title"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:padding="16dp"-->
+    <!--                android:textColor="?attr/colorPrimary"-->
+    <!--                android:textSize="32sp" />-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Product Overview" />-->
-<!--        </LinearLayout>-->
+    <!--            <TextView-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Product Overview" />-->
+    <!--        </LinearLayout>-->
 
-<!--    </com.google.android.material.card.MaterialCardView>-->
+    <!--    </com.google.android.material.card.MaterialCardView>-->
+
+
+    <!--    <com.google.android.material.card.MaterialCardView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="16dp"-->
+    <!--        app:cardCornerRadius="24dp">-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/title"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:padding="16dp"-->
+    <!--                android:textColor="?attr/colorPrimary"-->
+    <!--                android:textSize="32sp" />-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Product Overview" />-->
+    <!--        </LinearLayout>-->
+
+    <!--    </com.google.android.material.card.MaterialCardView>-->
 </LinearLayout>
