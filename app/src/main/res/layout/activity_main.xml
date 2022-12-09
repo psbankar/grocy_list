@@ -42,13 +42,14 @@
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/volumebutton"
-                        android:layout_width="74dp"
-                        android:layout_height="match_parent"
+                        android:layout_margin="6dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:scaleType="fitCenter"
-                        tools:ignore="SpeakableTextPresentCheck"
-                        tools:srcCompat="@drawable/volume3" />
+                        app:srcCompat="@drawable/ic_baseline_volume_up_24"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
                 </LinearLayout>
 

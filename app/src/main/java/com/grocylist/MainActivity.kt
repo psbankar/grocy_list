@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var text3: TextView
     var expCount = 0
     private var tts: TextToSpeech? = null
-    private var btnSpeak: ImageButton? = null
+    private var btnSpeak: ImageView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
