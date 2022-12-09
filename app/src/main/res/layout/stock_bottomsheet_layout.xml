@@ -158,7 +158,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/consume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

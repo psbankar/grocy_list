@@ -10,11 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -91,6 +94,7 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
             val view = LayoutInflater.from(context).inflate(R.layout.stock_bottomsheet_layout, null)
             val deleteButton : Button = view.findViewById(R.id.delete_button)
             val addToShoppingListButton : Button = view.findViewById(R.id.add_to_sl_button)
+            val consume : Button = view.findViewById(R.id.consume)
             deleteButton.setOnClickListener {
                 deleteItem(position)
                 dialog.hide()
@@ -98,6 +102,10 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
 
             addToShoppingListButton.setOnClickListener {
                 addToSL(position)
+                dialog.hide()
+            }
+            consume.setOnClickListener {
+                consumeQuantity(position)
                 dialog.hide()
             }
             dialog.setContentView(view)
@@ -150,6 +158,35 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
         notifyItemRemoved(position)
     }
 
+    private fun consumeQuantity(position: Int) {
+
+        val builder = AlertDialog.Builder(context)
+        val inflater = context.layoutInflater
+        val dialoglayout = inflater.inflate(R.layout.updatequantity, null)
+
+
+        dialoglayout.findViewById<TextView>(R.id.quantity).text =
+            list[position].data?.get("amount").toString()
+        dialoglayout.findViewById<TextView>(R.id.quantity_spinner).text =
+            list[position].data?.get("qty").toString()
+        val editText = dialoglayout.findViewById<TextView>(R.id.quantity)
+        builder.setView(dialoglayout)
+        builder.setTitle("Consume")
+            .setMessage("Update the Quantity")
+            .setCancelable(false)
+        builder.setPositiveButton("OK") { dialogInterface, i ->
+            Toast.makeText(context, "EditText is " + editText.text.toString(), Toast.LENGTH_SHORT).show() }
+
+
+
+
+
+        //Creating dialog box
+        val dialog = builder.create()
+        dialog.show()
+
+    }
+
     override fun getItemCount(): Int {
         return list.size
     }
@@ -157,7 +194,7 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
     fun sortByTitle() {
 
         list.sortBy {
-            it.data?.get("name").toString().lowercase()
+            it.data?.get("expiry_date").toString()
         }
         notifyDataSetChanged()
     }
