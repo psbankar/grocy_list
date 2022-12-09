@@ -1,26 +1,24 @@
 package com.grocylist
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.gson.internal.bind.util.ISO8601Utils.format
-import java.lang.String.format
-import java.text.DateFormat
-import java.text.MessageFormat.format
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.math.absoluteValue
@@ -82,12 +80,26 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
             holder.expiry.setTextColor(ContextCompat.getColor(context, R.color.orange))
 
         }
+            else{
+            holder.expiry.visibility =View.INVISIBLE
+        }
         }
         catch (_: Exception){}
 
         holder.card.setOnClickListener {
             val dialog = BottomSheetDialog(context)
             val view = LayoutInflater.from(context).inflate(R.layout.stock_bottomsheet_layout, null)
+            val deleteButton : Button = view.findViewById(R.id.delete_button)
+            val addToShoppingListButton : Button = view.findViewById(R.id.add_to_sl_button)
+            deleteButton.setOnClickListener {
+                deleteItem(position)
+                dialog.hide()
+            }
+
+            addToShoppingListButton.setOnClickListener {
+                addToSL(position)
+                dialog.hide()
+            }
             dialog.setContentView(view)
             dialog.show()
             view.findViewById<TextView>(R.id.title).text =
@@ -114,22 +126,41 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
         }
     }
 
+    private fun addToSL(position: Int) {
+        val tempName =list[position].data?.get("name").toString()
+        val data = hashMapOf(
+            "name" to tempName,
+            "amount" to list[position].data?.get("amount").toString(),
+            "qty" to list[position].data?.get("qty").toString(),
+            "checked" to false
+        )
+        Firebase.firestore.collection("shopping_list").add(data).addOnSuccessListener {
+            Toast.makeText(
+                context,
+                "Successfully added ${tempName} to shopping list",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
+    private fun deleteItem(position: Int) {
+        list[position].reference.delete()
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun getItemCount(): Int {
         return list.size
     }
 
+    fun sortByTitle() {
 
-}
-
-class ModalBottomSheet : BottomSheetDialogFragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.stock_bottomsheet_layout, container, false)
-
-    companion object {
-        const val TAG = "ModalBottomSheet"
+        list.sortBy {
+            it.data?.get("name").toString().lowercase()
+        }
+        notifyDataSetChanged()
     }
+
+
 }

@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                     val hours = minutes / 60
                     val days = hours / 24
 
+
                     if(days<0){
                         overdue += 1
                     }

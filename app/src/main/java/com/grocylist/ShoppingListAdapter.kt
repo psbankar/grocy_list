@@ -76,17 +76,20 @@ class ShoppingListAdapter() :
         return list.size
     }
 
-    fun updateReceiptsList(newlist: MutableList<DocumentSnapshot>) {
-        list.clear()
-        list.addAll(newlist)
-        notifyDataSetChanged()
-    }
     fun clearChecked() {
-        list.forEach {
-            if(it.data?.get("checked") == true){
-                it.reference.delete()
+
+        val temp = list.iterator()
+        var c = -1
+        while (temp.hasNext()){
+            val item = temp.next()
+            c+=1
+            if(item.data?.get("checked") == true){
+                temp.remove()
+                item.reference.delete()
+                notifyDataSetChanged()
+//                notifyItemRemoved(c)
             }
-            updateReceiptsList(list)
+
         }
 
     }

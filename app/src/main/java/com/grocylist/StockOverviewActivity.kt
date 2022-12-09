@@ -4,19 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 
 class StockOverviewActivity : AppCompatActivity() {
 
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    lateinit var adapter: StockOverviewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_overview)
@@ -28,13 +28,14 @@ class StockOverviewActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.stock_recyclerview)
         val fab: ExtendedFloatingActionButton = findViewById(R.id.add_to_stock_fab)
-        lateinit var adapter: StockOverviewAdapter
+
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     // There are no request codes
 //                    val data: Intent? = result.data
 //                    openAddToStockActivity()
+                    adapter.notifyDataSetChanged()
                 }
             }
 
@@ -51,11 +52,19 @@ class StockOverviewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.actionbar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()
+            }
+            R.id.sort_by_title ->{
+                adapter.sortByTitle()
             }
         }
         return super.onOptionsItemSelected(item)

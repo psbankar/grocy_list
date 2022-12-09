@@ -28,6 +28,9 @@ class AddToShoppingListActivity : AppCompatActivity() {
         val db = Firebase.firestore
         quantity_spinner = findViewById(R.id.quantity_spinner)
 
+
+        supportActionBar?.title = "Add To Shopping List"
+
         ArrayAdapter.createFromResource(
             this,
             R.array.quantity_list,
@@ -75,6 +78,8 @@ class AddToShoppingListActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
+            } else {
+                Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
             }
 
         }

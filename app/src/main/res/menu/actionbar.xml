@@ -4,10 +4,10 @@
 
 
 
-        <item android:id="@+id/sortTitle"
-            android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        <item android:id="@+id/sort_by_title"
+            android:icon="@drawable/ic_baseline_sort_by_alpha_24"
             app:showAsAction="always"
-            android:title="Sort by Expiry Date" />
+            android:title="Sort by Name" />
 
 
 </menu>

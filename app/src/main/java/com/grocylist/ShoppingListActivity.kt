@@ -24,6 +24,8 @@ class ShoppingListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shopping_list)
 
+        supportActionBar?.title = "Shopping List"
+
         val db = Firebase.firestore
         val fab: ExtendedFloatingActionButton = findViewById(R.id.shopping_list_fab)
         recyclerView = findViewById(R.id.shopping_recyclerview)

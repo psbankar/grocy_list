@@ -32,6 +32,9 @@ class AddToStockActivity : AppCompatActivity() {
         val db = Firebase.firestore
         var quantityMetric: String = ""
 
+        supportActionBar?.title = "Add To Shopping List"
+
+
         quantity_spinner = findViewById(R.id.quantity_spinner)
 
         //
@@ -41,19 +44,38 @@ class AddToStockActivity : AppCompatActivity() {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val dpd = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-            // Display Selected date in textbox
-            purDate.setText(dayOfMonth.toString() + "-" + monthOfYear + "-" + year)
+                // Display Selected date in textbox
+                purDate.setText(dayOfMonth.toString() + "-" + monthOfYear + "-" + year)
 
-        }, year, month, day)
+            },
+            year,
+            month,
+            day
+        )
+        dpd.setOnCancelListener {
+            purDate.setText("")
+        }
 
-        val dpd2 = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val dpd2 = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-            // Display Selected date in textbox
-            expDate.setText(dayOfMonth.toString() + "-" + monthOfYear + "-" + year)
+                // Display Selected date in textbox
+                expDate.setText(dayOfMonth.toString() + "-" + monthOfYear + "-" + year)
 
-        }, year, month, day)
+            },
+            year,
+            month,
+            day
+        )
+
+        dpd2.setOnCancelListener {
+            expDate.setText("")
+        }
 
 //        dpd.show()
         //
@@ -94,22 +116,40 @@ class AddToStockActivity : AppCompatActivity() {
 //
             val purD = Calendar.getInstance()
             purD.set(dpd.datePicker.year, dpd.datePicker.month, dpd.datePicker.dayOfMonth)
-            val data = hashMapOf(
-                "name" to name.text?.trim().toString(),
-                "amount" to qty.text.toString(),
-                "price" to price.text.toString(),
-                "qty" to quantityMetric,
-                "date_purchased" to purD.time,
-                "expiry_date" to expD.time
-            )
-            db.collection("stock").add(data).addOnSuccessListener {
-                Toast.makeText(this, "Successfully added ${name.text?.trim()}", Toast.LENGTH_SHORT)
-                    .show()
-                val intent = Intent()
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            }
 
+            if (name.text?.trim()
+                    .toString().length != 0 && qty.text.toString().length != 0 && price.text.toString().length != 0
+
+            ) {
+                val data = hashMapOf<String, Any>(
+                    "name" to name.text?.trim().toString(),
+                    "amount" to qty.text.toString(),
+                    "price" to price.text.toString(),
+                    "qty" to quantityMetric
+                )
+
+                if(purDate.text?.length!=0){
+                   data.put("date_purchased", purD.time)
+
+                }
+                if(expDate.text?.length!=0){
+                    data.put("expiry_date" , purD.time)
+                    
+                }
+                db.collection("stock").add(data).addOnSuccessListener {
+                    Toast.makeText(
+                        this,
+                        "Successfully added ${name.text?.trim()}",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            } else {
+                Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
