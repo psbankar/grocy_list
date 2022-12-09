@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,9 +12,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInRightAnimationAdapter
 
 class StockOverviewActivity : AppCompatActivity() {
 
@@ -50,7 +46,7 @@ class StockOverviewActivity : AppCompatActivity() {
         db.collection("stock").addSnapshotListener { value, error ->
             val data = value!!.documents
 
-            adapter = StockOverviewAdapter(data)
+            adapter = StockOverviewAdapter(data, this)
             recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
                 // Change the durations.
                 setDuration(500)
