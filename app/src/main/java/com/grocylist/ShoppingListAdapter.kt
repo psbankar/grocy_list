@@ -1,31 +1,37 @@
 package com.grocylist
 
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class ShoppingListAdapter(data: MutableList<DocumentSnapshot>) :
+class ShoppingListAdapter() :
     RecyclerView.Adapter<ShoppingListAdapter.ShoppingListVH>() {
 
-    var list: MutableList<DocumentSnapshot>
 
+    val db: CollectionReference = Firebase.firestore.collection("shopping_list")
+    lateinit var list: MutableList<DocumentSnapshot> // = db.get().result.documents
     init {
-        list = data
+        loadDB()
+    }
+
+    fun loadDB() {
+        db.addSnapshotListener { value, error ->
+            list = value!!.documents
+        }
     }
 
     inner class ShoppingListVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val name: TextView = itemView.findViewById(R.id.item_name)
         val qty: TextView = itemView.findViewById(R.id.item_qty)
-        val expiry: TextView = itemView.findViewById(R.id.item_expiry)
         val card: MaterialCardView = itemView.findViewById(R.id.item_card)
     }
 
@@ -68,6 +74,21 @@ class ShoppingListAdapter(data: MutableList<DocumentSnapshot>) :
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun updateReceiptsList(newlist: MutableList<DocumentSnapshot>) {
+        list.clear()
+        list.addAll(newlist)
+        notifyDataSetChanged()
+    }
+    fun clearChecked() {
+        list.forEach {
+            if(it.data?.get("checked") == true){
+                it.reference.delete()
+            }
+            updateReceiptsList(list)
+        }
+
     }
 
 }

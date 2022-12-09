@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,16 +17,16 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 
 class ShoppingListActivity : AppCompatActivity() {
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    lateinit var adapter: ShoppingListAdapter
+    lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shopping_list)
 
         val db = Firebase.firestore
-        val recyclerView: RecyclerView = findViewById(R.id.shopping_recyclerview)
         val fab: ExtendedFloatingActionButton = findViewById(R.id.shopping_list_fab)
-        lateinit var adapter: ShoppingListAdapter
-
+        recyclerView = findViewById(R.id.shopping_recyclerview)
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -39,18 +41,47 @@ class ShoppingListActivity : AppCompatActivity() {
             resultLauncher.launch(Intent(this, AddToShoppingListActivity::class.java))
         }
 
-        db.collection("shopping_list").addSnapshotListener { value, error ->
-            val data = value!!.documents
-
-            adapter = ShoppingListAdapter(data)
-            recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
-                // Change the durations.
-                setDuration(500)
-                // Disable the first scroll mode.
+        adapter = ShoppingListAdapter()
+        recyclerView.adapter = ScaleInAnimationAdapter(adapter!!).apply {
+            // Change the durations.
+            setDuration(500)
+            // Disable the first scroll mode.
 //                setFirstOnly(false)
-            }
-
-            recyclerView.layoutManager = LinearLayoutManager(this)
         }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+//        db.collection("shopping_list").addSnapshotListener { value, error ->
+//            val data = value!!.documents
+//
+//
+//
+//
+//        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.shopping_list_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home ->{
+                finish()
+            }
+            R.id.clear_checked ->{
+                adapter.clearChecked()
+
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adapter.notifyDataSetChanged()
+
     }
 }

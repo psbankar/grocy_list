@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".AddToShoppingListActivity">
 
 
@@ -20,13 +21,17 @@
             android:id="@+id/item_name_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="Name"
+            android:inputType="textCapWords"
+            android:padding="16dp" />
 
         <EditText
             android:id="@+id/item_qty_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Quantity" />
+            android:hint="Quantity"
+            android:inputType="number"
+            android:padding="16dp" />
 
 
     </LinearLayout>

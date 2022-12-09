@@ -30,11 +30,6 @@ import com.squareup.picasso.Picasso
 import java.util.*
 
 
-//todo toolbar
-//todo menus(sort)
-//todo animations
-//todo Persistance
-//todo dialogs
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         text2 = findViewById(R.id.text2)
         text3 = findViewById(R.id.text3)
 
-
+        supportActionBar?.title = "Home Page"
         db.collection("stock").addSnapshotListener { value, error ->
 
             count = value!!.size()
