@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -58,6 +59,9 @@ class FindStoresActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_stores)
 
+        supportActionBar?.title = "Stores Near You"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mapFragment =
             supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
@@ -119,6 +123,15 @@ class FindStoresActivity : AppCompatActivity() {
 
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home ->{
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
     @SuppressLint("MissingPermission")
     private fun setUpMaps() {
         mapFragment.getMapAsync { googleMap ->
