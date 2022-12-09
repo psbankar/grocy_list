@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Grocy List</string>
+
+
+    <string-array name="quantity_list">
+        <item>gm</item>
+        <item>kg</item>
+        <item>L</item>
+        <item>ml</item>
+        <item>pack</item>
+        <item>lbs</item>
+        <item>oz</item>
+    </string-array>
 </resources>

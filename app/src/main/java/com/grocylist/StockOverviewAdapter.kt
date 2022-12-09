@@ -1,33 +1,43 @@
 package com.grocylist
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.gson.internal.bind.util.ISO8601Utils.format
 import java.lang.String.format
 import java.text.DateFormat
 import java.text.MessageFormat.format
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.math.absoluteValue
 
-class StockOverviewAdapter(
-    data: MutableList<DocumentSnapshot>,
-    stockOverviewActivity: StockOverviewActivity
+class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
 ) : RecyclerView.Adapter<StockOverviewAdapter.StockOverviewViewHolder>() {
-    var list: MutableList<DocumentSnapshot>
+    lateinit var list: MutableList<DocumentSnapshot>
     var context = stockOverviewActivity
-
+    val db: CollectionReference = Firebase.firestore.collection("stock")
     init {
-        list = data
+        loadDB()
+    }
+
+    private fun loadDB() {
+        db.addSnapshotListener { value, error ->
+            list = value!!.documents
+        }
     }
 
     inner class StockOverviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,7 +46,6 @@ class StockOverviewAdapter(
         val qty: TextView = itemView.findViewById(R.id.item_qty)
         val expiry: TextView = itemView.findViewById(R.id.item_expiry)
         val card: MaterialCardView = itemView.findViewById(R.id.item_card)
-        val con = itemView.context as StockOverviewActivity
     }
 
 //    fun getActivity(){
@@ -55,9 +64,26 @@ class StockOverviewAdapter(
         holder.qty.text = "${list[position].data?.get("amount").toString()} ${
             list[position].data?.get("qty").toString()
         }"
-        if (list[position].data?.get("expiry_date") != null)
-            holder.expiry.text =
-                (list[position].data?.get("expiry_date") as Timestamp).toDate().toString()
+        try{
+        val tempDate = (list[position].data?.get("expiry_date") as Timestamp).toDate().time - Date().time
+        val seconds = tempDate / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        if(days<0){
+            holder.expiry.text = " Item overdue ${days.absoluteValue} day(s) ago"
+            holder.expiry.visibility =View.VISIBLE
+            holder.expiry.setTextColor(Color.RED)
+        }
+        else if(days in 1..6){
+            holder.expiry.text = " Item expiring in $days day(s)"
+            holder.expiry.visibility =View.VISIBLE
+            holder.expiry.setTextColor(ContextCompat.getColor(context, R.color.orange))
+
+        }
+        }
+        catch (_: Exception){}
 
         holder.card.setOnClickListener {
             val dialog = BottomSheetDialog(context)

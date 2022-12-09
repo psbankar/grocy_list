@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +26,6 @@ class StockOverviewActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-
-        val db = Firebase.firestore
         val recyclerView: RecyclerView = findViewById(R.id.stock_recyclerview)
         val fab: ExtendedFloatingActionButton = findViewById(R.id.add_to_stock_fab)
         lateinit var adapter: StockOverviewAdapter
@@ -34,7 +33,7 @@ class StockOverviewActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     // There are no request codes
-                    val data: Intent? = result.data
+//                    val data: Intent? = result.data
 //                    openAddToStockActivity()
                 }
             }
@@ -43,19 +42,23 @@ class StockOverviewActivity : AppCompatActivity() {
             resultLauncher.launch(Intent(this, AddToStockActivity::class.java))
         }
 
-        db.collection("stock").addSnapshotListener { value, error ->
-            val data = value!!.documents
-
-            adapter = StockOverviewAdapter(data, this)
-            recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
-                // Change the durations.
-                setDuration(500)
-                // Disable the first scroll mode.
-//                setFirstOnly(false)
-            }
-
-            recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = StockOverviewAdapter(this)
+        recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
+            // Change the durations.
+            setDuration(500)
         }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

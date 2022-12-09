@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AddToStockActivity">
 
 
@@ -17,48 +17,107 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/item_name_edittext"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:padding="16dp">
 
-        <EditText
-            android:id="@+id/item_qty_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Quantity" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_name_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:inputType="textCapWords" />
 
-        <EditText
-            android:id="@+id/item_price_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Price" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <DatePicker
-            android:id="@+id/item_pur_date_picker"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner" />
+            android:padding="16dp">
 
-        <DatePicker
-            android:id="@+id/item_exp_date_picker"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_qty_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Quantity"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:padding="16dp"
+            android:id="@+id/quantity_spinner"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner" />
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_price_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_pur_date_edittext"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:layout_height="wrap_content"
+                android:hint="Purchase Date"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/item_exp_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Expiry Date"
+                android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+<!--        <DatePicker-->
+<!--            android:id="@+id/item_pur_date_picker"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:calendarViewShown="false"-->
+<!--            android:datePickerMode="spinner" />-->
+
+<!--        <DatePicker-->
+<!--            android:id="@+id/item_exp_date_picker"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:calendarViewShown="false"-->
+<!--            android:datePickerMode="spinner" />-->
 
     </LinearLayout>
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/save_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="Save"
-        android:id="@+id/save_fab"
+        app:icon="@drawable/ic_baseline_save_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

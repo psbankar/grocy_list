@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var stockOverviewCard: CardView
     lateinit var shoppingListCard: CardView
     lateinit var db: FirebaseFirestore
-    var value: Int = 0
+    var value: Double = 0.0
     lateinit var text1: TextView
     lateinit var text2: TextView
     lateinit var text3: TextView
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("rgd", it.data.toString())
                 try {
                     //                    Log.d("hdth",it["price"].toString())
-                    this.value += it["price"].toString().toInt()
+                    this.value += it["price"].toString().toDouble()
                     val tempDate = (it["expiry_date"] as Timestamp).toDate().time - Date().time
                     val seconds = tempDate / 1000
                     val minutes = seconds / 60
