@@ -69,4 +69,5 @@ class ShoppingListAdapter(data: MutableList<DocumentSnapshot>) :
     override fun getItemCount(): Int {
         return list.size
     }
+
 }
