@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,27 +12,19 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInRightAnimationAdapter
 
-class StockOverviewActivity : AppCompatActivity() {
-
+class ShoppingListActivity : AppCompatActivity() {
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_stock_overview)
-
-
-        supportActionBar?.title = "Stock Overview"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-
+        setContentView(R.layout.activity_shopping_list)
 
         val db = Firebase.firestore
-        val recyclerView: RecyclerView = findViewById(R.id.stock_recyclerview)
-        val fab: ExtendedFloatingActionButton = findViewById(R.id.add_to_stock_fab)
-        lateinit var adapter: StockOverviewAdapter
+        val recyclerView: RecyclerView = findViewById(R.id.shopping_recyclerview)
+        val fab: ExtendedFloatingActionButton = findViewById(R.id.shopping_list_fab)
+        lateinit var adapter: ShoppingListAdapter
+
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -44,13 +35,14 @@ class StockOverviewActivity : AppCompatActivity() {
             }
 
         fab.setOnClickListener {
-            resultLauncher.launch(Intent(this, AddToStockActivity::class.java))
+
+            resultLauncher.launch(Intent(this, AddToShoppingListActivity::class.java))
         }
 
-        db.collection("stock").addSnapshotListener { value, error ->
+        db.collection("shopping_list").addSnapshotListener { value, error ->
             val data = value!!.documents
 
-            adapter = StockOverviewAdapter(data)
+            adapter = ShoppingListAdapter(data)
             recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
                 // Change the durations.
                 setDuration(500)
@@ -61,5 +53,4 @@ class StockOverviewActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
         }
     }
-
 }

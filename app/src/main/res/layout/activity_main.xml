@@ -2,10 +2,11 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerLayout"
     tools:context=".MainActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,16 +33,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Stock Overview"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/text1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
                     android:text="&#8226; You have x products in stock with value of xx.xx USD" />
 
                 <TextView
+                    android:id="@+id/text2"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
                     android:text="&#8226;x Products are due within next 7 days and x products are overdue" />
 
             </LinearLayout>
@@ -49,9 +60,10 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/shopping_list_card"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
 
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
@@ -68,15 +80,20 @@
 
                 <TextView
                     android:layout_width="wrap_content"
+                    android:textColor="?attr/colorPrimary"
                     android:layout_height="wrap_content"
                     android:text="Shopping List"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/text3"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
                     android:text="&#8226; You have x items in your shopping list" />
-
 
 
             </LinearLayout>
@@ -94,11 +111,12 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:menu="@menu/drawer_menu"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"/>
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

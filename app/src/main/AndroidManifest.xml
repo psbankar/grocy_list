@@ -17,6 +17,20 @@
         android:theme="@style/Theme.GrocyList"
         tools:targetApi="31">
         <activity
+            android:name=".AddToShoppingListActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ShoppingListActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".AddToStockActivity"
             android:exported="false">
             <meta-data
