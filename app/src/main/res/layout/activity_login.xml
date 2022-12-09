@@ -15,10 +15,10 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="191dp"
             android:maxWidth="200dp"
             android:maxHeight="200dp"
-            android:src="@mipmap/ic_launcher" />
+            app:srcCompat="@drawable/appicon" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -105,7 +105,6 @@
             android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundedcorners"
             android:textAlignment="center" />
         <!--        android:textColor="@color/principalEscuro"-->
 

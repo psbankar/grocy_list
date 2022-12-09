@@ -4,10 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
+
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Timestamp
@@ -17,6 +21,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mikhaellopez.circularimageview.CircularImageView
+import com.squareup.picasso.Picasso
 import java.util.*
 
 
@@ -47,8 +53,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
+        navView = findViewById(R.id.navView)
 //        startActivity(Intent(this, StockOverviewActivity::class.java))
         val user = Firebase.auth.currentUser
 
@@ -64,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             value.forEach {
                 Log.d("rgd", it.data.toString())
                 try {
-        //                    Log.d("hdth",it["price"].toString())
+                    //                    Log.d("hdth",it["price"].toString())
                     this.value += it["price"].toString().toInt()
                     val tempDate = (it["expiry_date"] as Timestamp).toDate().time - Date().time
                     val seconds = tempDate / 1000
@@ -80,8 +85,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 } catch (e: Exception){
-        //                    Log.d("hdth",it["name"].toString())
-                            Log.d("hdth",it.id.toString())
+                    //                    Log.d("hdth",it["name"].toString())
+                    Log.d("hdth",it.id.toString())
                 }
 
             }
@@ -99,6 +104,9 @@ class MainActivity : AppCompatActivity() {
         Log.d("nynf", count.toString())
 
 
+        val header = navView.getHeaderView(0)
+        val profileImg = header.findViewById<CircularImageView>(R.id.profileimg)
+        val username = header.findViewById<TextView>(R.id.username)
         stockOverviewCard = findViewById(R.id.stock_overview_card)
         shoppingListCard = findViewById(R.id.shopping_list_card)
 
@@ -114,13 +122,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
 
 
-        navView = findViewById(R.id.navView)
+
         drawerLayout = findViewById(R.id.drawerLayout)
         toggle = ActionBarDrawerToggle(this, drawerLayout, 0,0)
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        Picasso.get()
+            .load(user?.photoUrl)
+            .into(profileImg)
+        username.setText(user?.displayName)
 
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -130,12 +142,8 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 R.id.sign_out -> {
-                    Firebase.auth.signOut().runCatching {
 
-                    }.onSuccess {
-                        currentUser = null
-                        updateUI(currentUser) }
-
+                    alertBox()
                 }
 
             }
@@ -163,4 +171,30 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun alertBox(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Logout Alert")
+            .setMessage("Are you sure, you want to Logout ?")
+            .setCancelable(false)
+            .setPositiveButton(
+                "Yes"
+            ) { dialog, which ->
+                Firebase.auth.signOut().runCatching {
+
+                }.onSuccess {
+                    currentUser = null
+                    updateUI(currentUser) }
+            }
+            .setNegativeButton(
+                "No"
+            ) { dialog, which ->
+                drawerLayout.closeDrawer(GravityCompat.START)
+
+            }
+        //Creating dialog box
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 }
