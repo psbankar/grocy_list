@@ -136,6 +136,14 @@ class MainActivity : AppCompatActivity() {
 
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.StockOverviewmenu -> {
+                    startActivity(Intent(this, StockOverviewActivity::class.java))
+
+                }
+                R.id.shoppinglistmenu -> {
+                    startActivity(Intent(this, ShoppingListActivity::class.java))
+
+                }
                 R.id.find_stores -> {
                     startActivity(Intent(this, FindStoresActivity::class.java))
 
