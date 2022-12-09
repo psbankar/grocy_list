@@ -24,9 +24,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//TODO Fix location permission request
-//
-
 
 class FindStoresActivity : AppCompatActivity() {
     private val TAG: String? = "FindStoresActivityLogTag"
@@ -34,7 +31,7 @@ class FindStoresActivity : AppCompatActivity() {
     lateinit var mapFragment: SupportMapFragment
     private var map: GoogleMap? = null
     private var currentLocation: Location? = null
-    private var places: MutableList<Place>? = null
+    private var places: List<Place>? = null
     private var placeType: List<String> = listOf(
 //        "bakery",
 //        "bicycle_store",
@@ -176,9 +173,9 @@ class FindStoresActivity : AppCompatActivity() {
                         return
                     }
 
-                    val places = response.body()?.results ?: emptyList()
-                    this@FindStoresActivity.places?.addAll(places)
-                    Log.d(TAG,places.toString())
+                    places = response.body()!!.results
+//                    Log.d("sgrg", tempplaces.toString())
+//                    this@FindStoresActivity.places?.addAll(tempplaces)
                     addMarkers()
                 }
             }

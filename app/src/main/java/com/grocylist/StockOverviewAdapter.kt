@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 
@@ -20,7 +21,13 @@ class StockOverviewAdapter(data: MutableList<DocumentSnapshot>) : RecyclerView.A
         val name: TextView = itemView.findViewById(R.id.item_name)
         val qty: TextView = itemView.findViewById(R.id.item_qty)
         val expiry: TextView = itemView.findViewById(R.id.item_expiry)
+        val card: MaterialCardView = itemView.findViewById(R.id.item_card)
+        val con = itemView.context as StockOverviewActivity
     }
+
+//    fun getActivity(){
+//        con = activity
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockOverviewViewHolder {
         val view = LayoutInflater.from(parent.context)

@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter
+import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter
+import jp.wasabeef.recyclerview.adapters.SlideInRightAnimationAdapter
 
 class StockOverviewActivity : AppCompatActivity() {
 
@@ -42,13 +46,16 @@ class StockOverviewActivity : AppCompatActivity() {
             val data = value!!.documents
 
             adapter = StockOverviewAdapter(data)
-            recyclerView.adapter = adapter
+            recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
+                // Change the durations.
+                setDuration(500)
+                // Disable the first scroll mode.
+//                setFirstOnly(false)
+            }
 
             recyclerView.layoutManager = LinearLayoutManager(this)
         }
         db.collection("stock").get().addOnSuccessListener {
-
-
 
         }
     }
