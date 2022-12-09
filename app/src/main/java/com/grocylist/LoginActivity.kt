@@ -3,6 +3,7 @@ package com.grocylist
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -11,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -25,11 +27,20 @@ class LoginActivity : AppCompatActivity() {
     private var showOneTapUI = true
     lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+//    lateinit var emailInput: TextInputEditText
+//    lateinit var passwordInput: TextInputEditText
+//    lateinit var loginButtom: Button
+//    lateinit var registerButtom: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        supportActionBar?.hide()
+//        emailInput = findViewById(R.id.email_input)
+//        passwordInput = findViewById(R.id.password_input)
+//        loginButtom = findViewById(R.id.button_login)
+//        registerButtom = findViewById(R.id.button_register)
         signInWithGoogleButton = findViewById(R.id.sign_in_button)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -47,7 +58,73 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
 
-
+//        registerButtom.setOnClickListener {
+//            val tempEmail = emailInput.text.toString().trim()
+//            val tempPassword = passwordInput.text.toString().trim()
+//
+//            if (tempEmail.length == 0) {
+//                Toast.makeText(
+//                    baseContext, "Enter Email",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else if (tempPassword.length == 0) {
+//                Toast.makeText(
+//                    baseContext, "Enter Password",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                auth.createUserWithEmailAndPassword(tempEmail, tempPassword)
+//                    .addOnCompleteListener(this) { task ->
+//                        if (task.isSuccessful) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "createUserWithEmail:success")
+//                            val user = auth.currentUser
+//                            updateUI(user)
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
+//                            Toast.makeText(baseContext, "Authentication failed.",
+//                                Toast.LENGTH_SHORT).show()
+//                            updateUI(null)
+//                        }
+//                    }
+//            }
+//        }
+//
+//        loginButtom.setOnClickListener {
+//            val tempEmail = emailInput.text.toString().trim()
+//            val tempPassword = passwordInput.text.toString().trim()
+//
+//            if (tempEmail.length == 0) {
+//                Toast.makeText(
+//                    baseContext, "Enter Email",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else if (tempPassword.length == 0) {
+//                Toast.makeText(
+//                    baseContext, "Enter Password",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                auth.signInWithEmailAndPassword(tempEmail, tempPassword)
+//                    .addOnCompleteListener(this) { task ->
+//                        if (task.isSuccessful) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "signInWithEmail:success")
+//                            val user = auth.currentUser
+//                            updateUI(user)
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w(TAG, "signInWithEmail:failure", task.exception)
+//                            Toast.makeText(
+//                                baseContext, task.exception?.localizedMessage,
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            updateUI(null)
+//                        }
+//                    }
+//            }
+//        }
 
 
     }
@@ -107,7 +184,7 @@ class LoginActivity : AppCompatActivity() {
     // [END signin]
 
     private fun updateUI(user: FirebaseUser?) {
-        if(user!=null) {
+        if (user != null) {
             Toast.makeText(this, "Welcome " + user.displayName, Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, MainActivity::class.java))
         }
