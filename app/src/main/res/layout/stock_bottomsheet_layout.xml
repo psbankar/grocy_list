@@ -160,22 +160,29 @@
         <Button
             android:id="@+id/consume"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/roundedcorners"
+            android:backgroundTint="#FF03DAC5"
+            android:fadingEdge="horizontal|vertical"
             android:paddingStart="10dp"
             android:paddingLeft="20dp"
             android:paddingEnd="10dp"
-            android:text="Consume" />
+            android:text="Consume"
+            android:textColor="#0C0606" />
 
         <Button
             android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/roundedcorners"
+            android:backgroundTint="#FF03DAC5"
             android:paddingLeft="20dp"
             android:paddingEnd="10dp"
             android:paddingRight="10dp"
-            android:text="Delete" />
+            android:text="Delete"
+            android:textColor="#040303" />
     </LinearLayout>
 
     <LinearLayout
@@ -188,8 +195,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/roundedcorners"
+            android:backgroundTint="#FF03DAC5"
             android:text="Add to Shopping List"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="#0B0909" />
     </LinearLayout>
 
 
