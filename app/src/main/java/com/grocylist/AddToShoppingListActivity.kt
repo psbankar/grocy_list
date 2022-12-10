@@ -16,10 +16,14 @@ import java.util.*
 class AddToShoppingListActivity : AppCompatActivity() {
 
     lateinit var quantity_spinner: AppCompatSpinner
+    var editMode: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_to_shopping_list)
 
+        if (intent.hasExtra("name")) {
+            editMode = true
+        }
 
         val name: EditText = findViewById(R.id.item_name_edittext)
         val qty: EditText = findViewById(R.id.item_qty_edittext)
@@ -31,7 +35,7 @@ class AddToShoppingListActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Add To Shopping List"
 
-        ArrayAdapter.createFromResource(
+        val aa = ArrayAdapter.createFromResource(
             this,
             R.array.quantity_list,
             android.R.layout.simple_spinner_item
@@ -56,32 +60,57 @@ class AddToShoppingListActivity : AppCompatActivity() {
             }
 
         })
+
+        if (editMode) {
+            name.setText(intent.getStringExtra("name"))
+            qty.setText(intent.getStringExtra("amount"))
+            quantity_spinner.setSelection(aa.getPosition(intent.getStringExtra("qty")))
+        }
         submitFAB.setOnClickListener {
 
-            if (name.text.trim().toString().length != 0 && qty.text.toString().length != 0 &&
-                quantityMetric.length != 0
-            ) {
-                val data = hashMapOf(
-                    "name" to name.text.trim().toString(),
-                    "amount" to qty.text.toString(),
-                    "qty" to quantityMetric,
-                    "checked" to false
-                )
-                db.collection("shopping_list").add(data).addOnSuccessListener {
-                    Toast.makeText(
-                        this,
-                        "Successfully added ${name.text.trim()}",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+            if (editMode) {
+                if (name.text.trim().toString().length != 0 && qty.text.toString().length != 0 &&
+                    quantityMetric.length != 0
+                ) {
+                    db.collection("shopping_list").document(intent.getStringExtra("documentID")!!)
+                        .update(
+                            hashMapOf(
+                                "name" to name.text.trim().toString(),
+                                "amount" to qty.text.toString(),
+                                "qty" to quantityMetric,
+                                "checked" to false
+                            ) as Map<String, Any>
+                        )
                     val intent = Intent()
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
             } else {
-                Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
-            }
+                if (name.text.trim().toString().length != 0 && qty.text.toString().length != 0 &&
+                    quantityMetric.length != 0
+                ) {
+                    val data = hashMapOf(
+                        "name" to name.text.trim().toString(),
+                        "amount" to qty.text.toString(),
+                        "qty" to quantityMetric,
+                        "checked" to false
+                    )
+                    db.collection("shopping_list").add(data).addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Successfully added ${name.text.trim()}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
+                }
 
+            }
         }
     }
 }

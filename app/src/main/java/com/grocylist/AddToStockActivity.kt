@@ -19,6 +19,7 @@ import javax.xml.datatype.DatatypeConstants.MONTHS
 
 
 class AddToStockActivity : AppCompatActivity() {
+    var editMode: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_to_stock)
@@ -35,6 +36,9 @@ class AddToStockActivity : AppCompatActivity() {
         supportActionBar?.title = "Add To Shopping List"
 
 
+        if (intent.hasExtra("name")) {
+            editMode = true
+        }
         quantity_spinner = findViewById(R.id.quantity_spinner)
 
         //
@@ -79,7 +83,7 @@ class AddToStockActivity : AppCompatActivity() {
 
 //        dpd.show()
         //
-        ArrayAdapter.createFromResource(
+        val aa = ArrayAdapter.createFromResource(
             this,
             R.array.quantity_list,
             android.R.layout.simple_spinner_item
@@ -110,45 +114,90 @@ class AddToStockActivity : AppCompatActivity() {
         expDate.setOnClickListener {
             dpd2.show()
         }
+
+        if (editMode) {
+            name.setText(intent.getStringExtra("name"))
+            qty.setText(intent.getStringExtra("amount"))
+            price.setText(intent.getStringExtra("price"))
+
+            quantity_spinner.setSelection(aa.getPosition(intent.getStringExtra("qty")))
+        }
+
         submitFAB.setOnClickListener {
+
             val expD = Calendar.getInstance()
             expD.set(dpd2.datePicker.year, dpd2.datePicker.month, dpd2.datePicker.dayOfMonth)
 //
             val purD = Calendar.getInstance()
             purD.set(dpd.datePicker.year, dpd.datePicker.month, dpd.datePicker.dayOfMonth)
 
-            if (name.text?.trim()
-                    .toString().length != 0 && qty.text.toString().length != 0 && price.text.toString().length != 0
-
-            ) {
-                val data = hashMapOf<String, Any>(
-                    "name" to name.text?.trim().toString(),
-                    "amount" to qty.text.toString(),
-                    "price" to price.text.toString(),
-                    "qty" to quantityMetric
-                )
-
-                if(purDate.text?.length!=0){
-                   data.put("date_purchased", purD.time)
-
-                }
-                if(expDate.text?.length!=0){
-                    data.put("expiry_date" , purD.time)
-                    
-                }
-                db.collection("stock").add(data).addOnSuccessListener {
-                    Toast.makeText(
-                        this,
-                        "Successfully added ${name.text?.trim()}",
-                        Toast.LENGTH_SHORT
+            if (editMode) {
+                if (name.text?.trim().toString().isNotEmpty() && qty.text.toString().isNotEmpty() &&
+                    quantityMetric.isNotEmpty()
+                ) {
+                    val data = hashMapOf<String, Any>(
+                        "name" to name.text?.trim().toString(),
+                        "amount" to qty.text.toString(),
+                        "price" to price.text.toString(),
+                        "qty" to quantityMetric
                     )
-                        .show()
-                    val intent = Intent()
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+
+                    if (purDate.text?.length != 0) {
+                        data["date_purchased"] = purD.time
+
+                    }
+                    if (expDate.text?.length != 0) {
+                        data["expiry_date"] = purD.time
+
+                    }
+                    db.collection("stock").document(intent.getStringExtra("documentID")!!)
+                        .update(
+                            data
+                        ).addOnSuccessListener {
+                            val intent = Intent()
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        }
+
+                } else {
+                    Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
+                if (name.text?.trim()
+                        .toString().isNotEmpty() && qty.text.toString()
+                        .isNotEmpty() && price.text.toString()
+                        .isNotEmpty()
+
+                ) {
+                    val data = hashMapOf<String, Any>(
+                        "name" to name.text?.trim().toString(),
+                        "amount" to qty.text.toString(),
+                        "price" to price.text.toString(),
+                        "qty" to quantityMetric
+                    )
+
+                    if (purDate.text?.length != 0) {
+                        data.put("date_purchased", purD.time)
+
+                    }
+                    if (expDate.text?.length != 0) {
+                        data.put("expiry_date", purD.time)
+
+                    }
+                    db.collection("stock").add(data).addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Successfully added ${name.text?.trim()}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

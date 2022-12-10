@@ -187,7 +187,6 @@ class FindStoresActivity : AppCompatActivity() {
                     }
 
                     places = response.body()!!.results
-//                    Log.d("sgrg", tempplaces.toString())
 //                    this@FindStoresActivity.places?.addAll(tempplaces)
                     addMarkers()
                 }

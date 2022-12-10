@@ -69,9 +69,7 @@ class MainActivity : AppCompatActivity() {
 
             count = value!!.size()
             value.forEach {
-                Log.d("rgd", it.data.toString())
                 try {
-                    //                    Log.d("hdth",it["price"].toString())
                     this.value += it["price"].toString().toDouble()
                     val tempDate = (it["expiry_date"] as Timestamp).toDate().time - Date().time
                     val seconds = tempDate / 1000
@@ -88,12 +86,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 } catch (e: Exception){
-                    //                    Log.d("hdth",it["name"].toString())
-                    Log.d("hdth",it.id.toString())
                 }
 
             }
-            Log.d("vvvv", value.size().toString())
 
             text1.text = "• ${count.toString()} products in stock with value of \$${this.value}"
             text2.text = "• ${expCount} Products are due within next 7 days and ${overdue} products are overdue"
@@ -103,8 +98,6 @@ class MainActivity : AppCompatActivity() {
 
             text3.text = "• You have ${value?.size()} products in your shopping list"
         }
-
-        Log.d("nynf", count.toString())
 
 
         val header = navView.getHeaderView(0)
@@ -120,8 +113,6 @@ class MainActivity : AppCompatActivity() {
         shoppingListCard.setOnClickListener{
             startActivity(Intent(this, ShoppingListActivity::class.java))
         }
-
-
 
         if (user == null)
             startActivity(Intent(this, LoginActivity::class.java))
@@ -201,7 +192,6 @@ class MainActivity : AppCompatActivity() {
                 "Yes"
             ) { dialog, which ->
                 Firebase.auth.signOut().runCatching {
-
                 }.onSuccess {
                     currentUser = null
                     updateUI(currentUser) }

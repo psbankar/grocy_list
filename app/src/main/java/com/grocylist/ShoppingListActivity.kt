@@ -20,6 +20,7 @@ class ShoppingListActivity : AppCompatActivity() {
     lateinit var adapter: ShoppingListAdapter
     lateinit var recyclerView: RecyclerView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shopping_list)
@@ -43,22 +44,14 @@ class ShoppingListActivity : AppCompatActivity() {
             resultLauncher.launch(Intent(this, AddToShoppingListActivity::class.java))
         }
 
-        adapter = ShoppingListAdapter()
+        adapter = ShoppingListAdapter(this)
         recyclerView.adapter = ScaleInAnimationAdapter(adapter!!).apply {
-            // Change the durations.
             setDuration(500)
-            // Disable the first scroll mode.
-//                setFirstOnly(false)
+
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-//        db.collection("shopping_list").addSnapshotListener { value, error ->
-//            val data = value!!.documents
-//
-//
-//
-//
-//        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

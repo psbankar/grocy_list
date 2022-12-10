@@ -1,5 +1,6 @@
 package com.grocylist
 
+import android.content.Intent
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +13,16 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class ShoppingListAdapter() :
+class ShoppingListAdapter(shoppingListActivity: ShoppingListActivity) :
     RecyclerView.Adapter<ShoppingListAdapter.ShoppingListVH>() {
 
 
     val db: CollectionReference = Firebase.firestore.collection("shopping_list")
-    lateinit var list: MutableList<DocumentSnapshot> // = db.get().result.documents
+    lateinit var list: MutableList<DocumentSnapshot>
+    val shoppingListActivity: ShoppingListActivity
     init {
         loadDB()
+        this.shoppingListActivity = shoppingListActivity
     }
 
     fun loadDB() {
@@ -55,7 +58,7 @@ class ShoppingListAdapter() :
             holder.name.paintFlags = 0
             holder.qty.paintFlags = 0
         }
-        holder.card.setOnLongClickListener {
+        holder.card.setOnClickListener {
             if (list[position].data?.get("checked") == false) {
                 holder.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 holder.qty.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
@@ -69,6 +72,18 @@ class ShoppingListAdapter() :
                     mapOf( "checked" to false ))
             }
             true
+        }
+
+        holder.card.setOnLongClickListener {
+            val i = Intent(shoppingListActivity, AddToShoppingListActivity::class.java)
+            i.putExtra("name", list[position].data?.get("name").toString())
+            i.putExtra("amount", list[position].data?.get("amount").toString())
+            i.putExtra("qty", list[position].data?.get("qty").toString())
+            i.putExtra("documentID", list[position].id)
+            shoppingListActivity.resultLauncher.launch(i)
+//            shoppingListActivity.startActivity(i)
+            true
+
         }
     }
 

@@ -26,11 +26,13 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.math.absoluteValue
 
-class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
+class StockOverviewAdapter(
+    stockOverviewActivity: StockOverviewActivity
 ) : RecyclerView.Adapter<StockOverviewAdapter.StockOverviewViewHolder>() {
     lateinit var list: MutableList<DocumentSnapshot>
     var context = stockOverviewActivity
     val db: CollectionReference = Firebase.firestore.collection("stock")
+
     init {
         loadDB()
     }
@@ -59,44 +61,55 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
         return StockOverviewViewHolder(view)
     }
 
-    @SuppressLint("MissingInflatedId")
+
     override fun onBindViewHolder(holder: StockOverviewViewHolder, position: Int) {
         holder.name.text = list[position].data?.get("name").toString()
         holder.qty.text = "${list[position].data?.get("amount").toString()} ${
             list[position].data?.get("qty").toString()
         }"
-        try{
-        val tempDate = (list[position].data?.get("expiry_date") as Timestamp).toDate().time - Date().time
-        val seconds = tempDate / 1000
-        val minutes = seconds / 60
-        val hours = minutes / 60
-        val days = hours / 24
+        try {
+            val tempDate =
+                (list[position].data?.get("expiry_date") as Timestamp).toDate().time - Date().time
+            val seconds = tempDate / 1000
+            val minutes = seconds / 60
+            val hours = minutes / 60
+            val days = hours / 24
 
-        if(days<0){
-            holder.expiry.text = " Item overdue ${days.absoluteValue} day(s) ago"
-            holder.expiry.visibility =View.VISIBLE
-            holder.expiry.setTextColor(Color.RED)
-        }
-        else if(days in 1..6){
-            holder.expiry.text = " Item expiring in $days day(s)"
-            holder.expiry.visibility =View.VISIBLE
-            holder.expiry.setTextColor(ContextCompat.getColor(context, R.color.orange))
+            if (days < 0) {
+                holder.expiry.text = " Item overdue ${days.absoluteValue} day(s) ago"
+                holder.expiry.visibility = View.VISIBLE
+                holder.expiry.setTextColor(Color.RED)
+            } else if (days in 1..6) {
+                holder.expiry.text = " Item expiring in $days day(s)"
+                holder.expiry.visibility = View.VISIBLE
+                holder.expiry.setTextColor(ContextCompat.getColor(context, R.color.orange))
 
+            } else {
+                holder.expiry.visibility = View.INVISIBLE
+            }
+        } catch (_: Exception) {
         }
-            else{
-            holder.expiry.visibility =View.INVISIBLE
-        }
-        }
-        catch (_: Exception){}
 
         holder.card.setOnClickListener {
             val dialog = BottomSheetDialog(context)
             val view = LayoutInflater.from(context).inflate(R.layout.stock_bottomsheet_layout, null)
-            val deleteButton : Button = view.findViewById(R.id.delete_button)
-            val addToShoppingListButton : Button = view.findViewById(R.id.add_to_sl_button)
-            val consume : Button = view.findViewById(R.id.consume)
+            val deleteButton: Button = view.findViewById(R.id.delete_button)
+            val editButton: Button = view.findViewById(R.id.edit_button)
+            val addToShoppingListButton: Button = view.findViewById(R.id.add_to_sl_button)
+            val consume: Button = view.findViewById(R.id.consume)
             deleteButton.setOnClickListener {
                 deleteItem(position)
+                dialog.hide()
+            }
+
+            editButton.setOnClickListener {
+                val i = Intent(context, AddToStockActivity::class.java)
+                i.putExtra("name", list[position].data?.get("name").toString())
+                i.putExtra("amount", list[position].data?.get("amount").toString())
+                i.putExtra("qty", list[position].data?.get("qty").toString())
+                i.putExtra("price", list[position].data?.get("price").toString())
+                i.putExtra("documentID", list[position].id)
+                context.resultLauncher.launch(i)
                 dialog.hide()
             }
 
@@ -113,7 +126,8 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
             view.findViewById<TextView>(R.id.title).text =
                 list[position].data?.get("name").toString()
             view.findViewById<TextView>(R.id.amount).text =
-                list[position].data?.get("amount").toString() + " " + list[position].data?.get("qty").toString()
+                list[position].data?.get("amount")
+                    .toString() + " " + list[position].data?.get("qty").toString()
             if (list[position].data?.get("expiry_date") != null) {
                 val date = (list[position].data?.get("expiry_date") as Timestamp).toDate()
                 val sdf = SimpleDateFormat("MM/dd/yyyy")
@@ -135,7 +149,7 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
     }
 
     private fun addToSL(position: Int) {
-        val tempName =list[position].data?.get("name").toString()
+        val tempName = list[position].data?.get("name").toString()
         val data = hashMapOf(
             "name" to tempName,
             "amount" to list[position].data?.get("amount").toString(),
@@ -175,8 +189,19 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
             .setMessage("Update the Quantity")
             .setCancelable(false)
         builder.setPositiveButton("OK") { dialogInterface, i ->
-            Toast.makeText(context, "EditText is " + editText.text.toString(), Toast.LENGTH_SHORT).show() }
+            val q =
+                list[position].data?.get("amount").toString().toDouble() - editText.text.toString()
+                    .toDouble()
 
+            if (q >= 0)
+                db.document(list[position].id).update("amount", q).addOnSuccessListener {
+                    notifyDataSetChanged()
+                }
+            else
+                Toast.makeText(context, "Enter quantity less than stock", Toast.LENGTH_SHORT).show()
+
+            notifyDataSetChanged()
+        }
 
 
 
@@ -189,12 +214,12 @@ class StockOverviewAdapter(stockOverviewActivity: StockOverviewActivity
 
     override fun getItemCount(): Int {
         return list.size
+
     }
 
     fun sortByTitle() {
-
         list.sortBy {
-            it.data?.get("expiry_date").toString()
+            it.data?.get("name").toString().lowercase()
         }
         notifyDataSetChanged()
     }

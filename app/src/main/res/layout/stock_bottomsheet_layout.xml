@@ -12,12 +12,11 @@
 
 
     <LinearLayout
-        android:layout_width="392dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp">
+        android:paddingTop="48dp"
+        android:paddingBottom="48dp">
 
         <TextView
             android:id="@+id/title"
@@ -44,10 +43,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#673AB7"
-
+        android:backgroundTint="?attr/colorPrimary"
         android:elevation="10dp"
-
         android:orientation="vertical">
 
 
@@ -57,7 +54,7 @@
             android:text="Amount"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#050505"
+            android:textColor="@color/black"
             android:textColorHighlight="@android:color/background_dark"
             android:textStyle="bold|italic" />
 
@@ -65,9 +62,9 @@
         <TextView
             android:id="@+id/amount"
             android:layout_width="match_parent"
-            android:layout_height="29dp"
+            android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textColor="#050505" />
+            android:textColor="@color/black" />
 
 
 
@@ -78,7 +75,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#673AB7"
+            android:backgroundTint="?attr/colorPrimary"
             android:orientation="vertical">
 
             <TextView
@@ -87,16 +84,16 @@
                 android:text="Item Price"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#050505"
+                android:textColor="@color/black"
                 android:textColorHighlight="@android:color/background_dark"
                 android:textStyle="bold|italic" />
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="match_parent"
-                android:layout_height="31dp"
+                android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textColor="#050505" />
+                android:textColor="@color/black" />
 
 
         </LinearLayout>
@@ -104,7 +101,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#673AB7"
+            android:backgroundTint="?attr/colorPrimary"
             android:orientation="vertical">
 
             <TextView
@@ -113,7 +110,7 @@
                 android:text="Purchased Date"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#050505"
+                android:textColor="@color/black"
                 android:textColorHighlight="@android:color/background_dark"
                 android:textStyle="bold|italic" />
 
@@ -122,13 +119,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="31dp"
                 android:textAlignment="center"
-                android:textColor="#050505" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#673AB7"
+            android:backgroundTint="?attr/colorPrimary"
             android:orientation="vertical">
 
             <TextView
@@ -137,16 +134,16 @@
                 android:text="Expiry Date"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#050505"
+                android:textColor="@color/black"
                 android:textColorHighlight="@android:color/background_dark"
                 android:textStyle="bold|italic" />
 
             <TextView
                 android:id="@+id/expiry_date"
                 android:layout_width="match_parent"
-                android:layout_height="29dp"
+                android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textColor="#050505" />
+                android:textColor="@color/black" />
 
 
         </LinearLayout>
@@ -158,35 +155,40 @@
         android:orientation="horizontal">
 
         <Button
+            android:layout_margin="16dp"
             android:id="@+id/consume"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/roundedcorners"
-            android:backgroundTint="#FF03DAC5"
             android:fadingEdge="horizontal|vertical"
-            android:paddingStart="10dp"
-            android:paddingLeft="20dp"
-            android:paddingEnd="10dp"
-            android:text="Consume"
-            android:textColor="#0C0606" />
+            android:text="Consume" />
 
         <Button
+            android:layout_margin="16dp"
             android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/roundedcorners"
             android:backgroundTint="#FF03DAC5"
-            android:paddingLeft="20dp"
-            android:paddingEnd="10dp"
-            android:paddingRight="10dp"
-            android:text="Delete"
-            android:textColor="#040303" />
+            android:text="Delete" />
+
+        <Button
+            android:background="@drawable/roundedcorners"
+            android:backgroundTint="#FF03DAC5"
+            android:fadingEdge="horizontal|vertical"
+            android:layout_margin="16dp"
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Edit" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -196,93 +198,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/roundedcorners"
-            android:backgroundTint="#FF03DAC5"
             android:text="Add to Shopping List"
-            android:textAlignment="center"
-            android:textColor="#0B0909" />
+            android:textAlignment="center" />
     </LinearLayout>
 
-
-    <!--    <com.google.android.material.card.MaterialCardView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="16dp"-->
-    <!--        app:cardCornerRadius="24dp">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:orientation="vertical">-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/title"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:padding="16dp"-->
-    <!--                android:textColor="?attr/colorPrimary"-->
-    <!--                android:textSize="32sp" />-->
-
-    <!--            <TextView-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:text="Product Overview" />-->
-    <!--        </LinearLayout>-->
-
-    <!--    </com.google.android.material.card.MaterialCardView>-->
-
-
-    <!--    <com.google.android.material.card.MaterialCardView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="16dp"-->
-    <!--        app:cardCornerRadius="24dp">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:orientation="vertical">-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/title"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:padding="16dp"-->
-    <!--                android:textColor="?attr/colorPrimary"-->
-    <!--                android:textSize="32sp" />-->
-
-    <!--            <TextView-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:text="Product Overview" />-->
-    <!--        </LinearLayout>-->
-
-    <!--    </com.google.android.material.card.MaterialCardView>-->
-
-
-    <!--    <com.google.android.material.card.MaterialCardView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="16dp"-->
-    <!--        app:cardCornerRadius="24dp">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:orientation="vertical">-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/title"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:padding="16dp"-->
-    <!--                android:textColor="?attr/colorPrimary"-->
-    <!--                android:textSize="32sp" />-->
-
-    <!--            <TextView-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:text="Product Overview" />-->
-    <!--        </LinearLayout>-->
-
-    <!--    </com.google.android.material.card.MaterialCardView>-->
 </LinearLayout>
