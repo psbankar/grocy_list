@@ -20,7 +20,7 @@
             android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Item Name"
+            android:text="@string/name"
             android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -29,14 +29,14 @@
         android:id="@+id/item_qty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Item Quantity" />
+        android:text="@string/quantity" />
 
     <TextView
         android:id="@+id/item_expiry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:text="Item Expiry" />
+        android:text="@string/expiry_date" />
 
     </LinearLayout>
 

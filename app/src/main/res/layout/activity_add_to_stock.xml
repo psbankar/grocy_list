@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:fitsSystemWindows="true"
     tools:context=".AddToStockActivity"
     >
@@ -15,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:transitionName="@string/add_to_stock"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +31,7 @@
                 android:id="@+id/item_name_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:inputType="textCapWords" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -43,7 +45,7 @@
                 android:id="@+id/item_qty_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Quantity"
+                android:hint="@string/quantity"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +66,7 @@
                 android:id="@+id/item_price_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Price"
+                android:hint="@string/price"
 
                 android:inputType="numberDecimal" />
 
@@ -73,7 +75,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Purchase Date"
+            android:hint="@string/purchase_date"
             android:padding="16dp"
             app:endIconMode="clear_text">
 
@@ -97,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="false"
-                android:hint="Expiry Date"
+                android:hint="@string/expiry_date"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -124,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Save"
+        android:text="@string/save"
         app:icon="@drawable/ic_baseline_save_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:transitionName="@string/stock_overview"
     tools:context=".StockOverviewActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/stock_recyclerview"
+        android:transitionName="@string/stock_overview"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,9 +21,10 @@
         android:layout_width="wrap_content"
         android:id="@+id/add_to_stock_fab"
         android:layout_height="wrap_content"
+        android:transitionName="@string/add_to_stock"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Add to stock"
+        android:text="@string/add_to_stock"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

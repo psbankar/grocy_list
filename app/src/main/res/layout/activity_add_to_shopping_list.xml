@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:transitionName="@string/add_new"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +27,7 @@
             android:id="@+id/item_name_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="@string/name"
             android:inputType="textCapWords"
             android:padding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -41,7 +42,7 @@
             android:id="@+id/item_qty_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Quantity"
+            android:hint="@string/quantity"
             android:inputType="number"
             android:padding="16dp" />
 
@@ -62,7 +63,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:icon="@drawable/ic_baseline_save_24"
-        android:text="Save"
+        android:text="@string/save"
         android:id="@+id/save_fab"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

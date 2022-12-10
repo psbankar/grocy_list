@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Clear checked"
+    <item android:title="@string/clear_checked"
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_clear_all_24"
         android:id="@+id/clear_checked"/>

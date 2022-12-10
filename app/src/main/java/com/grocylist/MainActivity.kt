@@ -3,18 +3,14 @@ package com.grocylist
 import android.content.Intent
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -30,44 +26,104 @@ import com.squareup.picasso.Picasso
 import java.util.*
 
 
-
 class MainActivity : AppCompatActivity() {
 
     private var overdue: Int = 0
     private var count: Int = 0
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var navView: NavigationView
-    lateinit var toggle: ActionBarDrawerToggle
-    var auth: FirebaseAuth = Firebase.auth
-    var currentUser: FirebaseUser? = auth.currentUser
-    lateinit var stockOverviewCard: CardView
-    lateinit var shoppingListCard: CardView
-    lateinit var db: FirebaseFirestore
-    var value: Double = 0.0
-    lateinit var text1: TextView
-    lateinit var text2: TextView
-    lateinit var text3: TextView
-    var expCount = 0
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
+    private lateinit var toggle: ActionBarDrawerToggle
+    private var auth: FirebaseAuth = Firebase.auth
+    private var currentUser: FirebaseUser? = auth.currentUser
+    private lateinit var stockOverviewCard: CardView
+    private lateinit var shoppingListCard: CardView
+    private lateinit var db: FirebaseFirestore
+    private var value: Double = 0.0
+    private lateinit var text1: TextView
+    private lateinit var text2: TextView
+    private lateinit var text3: TextView
+    private var expCount = 0
     private var tts: TextToSpeech? = null
     private var btnSpeak: ImageView? = null
-
+    private val user = Firebase.auth.currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navView = findViewById(R.id.navView)
-//        startActivity(Intent(this, StockOverviewActivity::class.java))
-        val user = Firebase.auth.currentUser
         btnSpeak = findViewById(R.id.volumebutton)
         db = Firebase.firestore
         text1 = findViewById(R.id.text1)
         text2 = findViewById(R.id.text2)
         text3 = findViewById(R.id.text3)
+        stockOverviewCard = findViewById(R.id.stock_overview_card)
+        shoppingListCard = findViewById(R.id.shopping_list_card)
 
         supportActionBar?.title = "Home Page"
-        db.collection("stock").addSnapshotListener { value, error ->
 
+        loadSummary()
+        loadDrawer()
+
+
+
+        stockOverviewCard.setOnClickListener {
+            startActivity(Intent(this, StockOverviewActivity::class.java), ActivityOptionsCompat.makeSceneTransitionAnimation(this, stockOverviewCard, getString(R.string.stock_overview)).toBundle())
+        }
+
+        shoppingListCard.setOnClickListener {
+            startActivity(Intent(this, ShoppingListActivity::class.java), ActivityOptionsCompat.makeSceneTransitionAnimation(this, shoppingListCard, getString(R.string.shopping_list)).toBundle())
+        }
+
+        ttsImplementation()
+
+    }
+
+    private fun ttsImplementation() {
+        tts = TextToSpeech(
+            applicationContext
+        ) { status ->
+            if (status != TextToSpeech.ERROR) {
+                tts?.language = Locale.UK
+            }
+
+            btnSpeak!!.setOnClickListener { speakout() }
+        }
+    }
+
+    private fun loadDrawer() {
+        val header = navView.getHeaderView(0)
+        val profileImg = header.findViewById<CircularImageView>(R.id.profileimg)
+        val username = header.findViewById<TextView>(R.id.username)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        toggle = ActionBarDrawerToggle(this, drawerLayout, 0, 0)
+
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        Picasso.get()
+            .load(user?.photoUrl)
+            .into(profileImg)
+        username.text = user?.displayName
+
+        navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.find_stores -> {
+                    startActivity(Intent(this, FindStoresActivity::class.java))
+                }
+                R.id.sign_out -> {
+                    alertBox()
+                }
+            }
+            true
+        }
+    }
+
+    private fun loadSummary() {
+        db.collection("data").document(Firebase.auth.currentUser?.uid.toString()).collection("stock").addSnapshotListener { value, _ ->
             count = value!!.size()
+            this.value = 0.0
+            expCount = 0
+            overdue = 0
             value.forEach {
                 try {
                     this.value += it["price"].toString().toDouble()
@@ -78,86 +134,24 @@ class MainActivity : AppCompatActivity() {
                     val days = hours / 24
 
 
-                    if(days<0){
+                    if (days < 0) {
                         overdue += 1
-                    }
-                    else if(days in 1..6){
+                    } else if (days in 1..6) {
                         expCount += 1
                     }
 
-                } catch (e: Exception){
+                } catch (_: Exception) {
                 }
 
             }
-
-            text1.text = "• ${count.toString()} products in stock with value of \$${this.value}"
-            text2.text = "• ${expCount} Products are due within next 7 days and ${overdue} products are overdue"
+            text1.text = getString(R.string.text1, count, this.value)
+            text2.text = getString(R.string.text2, expCount, overdue)
         }
 
-        db.collection("shopping_list").addSnapshotListener { value, error ->
+        db.collection("data").document(Firebase.auth.currentUser?.uid.toString()).collection("shopping_list").addSnapshotListener { value, error ->
 
-            text3.text = "• You have ${value?.size()} products in your shopping list"
+            text3.text = getString(R.string.text3, value?.size())
         }
-
-
-        val header = navView.getHeaderView(0)
-        val profileImg = header.findViewById<CircularImageView>(R.id.profileimg)
-        val username = header.findViewById<TextView>(R.id.username)
-        stockOverviewCard = findViewById(R.id.stock_overview_card)
-        shoppingListCard = findViewById(R.id.shopping_list_card)
-
-        stockOverviewCard.setOnClickListener{
-            startActivity(Intent(this, StockOverviewActivity::class.java))
-        }
-
-        shoppingListCard.setOnClickListener{
-            startActivity(Intent(this, ShoppingListActivity::class.java))
-        }
-
-        if (user == null)
-            startActivity(Intent(this, LoginActivity::class.java))
-
-
-
-        drawerLayout = findViewById(R.id.drawerLayout)
-        toggle = ActionBarDrawerToggle(this, drawerLayout, 0,0)
-
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        Picasso.get()
-            .load(user?.photoUrl)
-            .into(profileImg)
-        username.setText(user?.displayName)
-
-        tts = TextToSpeech(
-            applicationContext
-        ) { status ->
-            if (status != TextToSpeech.ERROR) {
-                tts?.setLanguage(Locale.UK)
-            }
-
-            btnSpeak!!.setOnClickListener{speakout()}
-        }
-
-
-        navView.setNavigationItemSelectedListener {
-            when (it.itemId) {
-
-                R.id.find_stores -> {
-                    startActivity(Intent(this, FindStoresActivity::class.java))
-
-
-                }
-                R.id.sign_out -> {
-
-                    alertBox()
-                }
-
-            }
-            true
-        }
-
     }
 
     override fun onStart() {
@@ -165,25 +159,28 @@ class MainActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = auth.currentUser
         updateUI(currentUser)
+        loadSummary()
     }
-    private fun speakout(){
-        val text = text1!!.text.toString()
-        tts!!.speak(text,TextToSpeech.QUEUE_FLUSH,null,"")
+
+    private fun speakout() {
+        val text = text1.text.toString()
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
+
     private fun updateUI(user: FirebaseUser?) {
-        if(user==null) {
+        if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun alertBox(){
+    private fun alertBox() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Logout Alert")
             .setMessage("Are you sure, you want to Logout ?")
@@ -193,8 +190,8 @@ class MainActivity : AppCompatActivity() {
             ) { dialog, which ->
                 Firebase.auth.signOut().runCatching {
                 }.onSuccess {
-                    currentUser = null
-                    updateUI(currentUser) }
+                    updateUI(null)
+                }
             }
             .setNegativeButton(
                 "No"

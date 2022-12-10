@@ -21,16 +21,6 @@ data class Place(
     }
 }
 
-//fun Place.getPositionVector(azimuth: Float, latLng: LatLng): Vector3 {
-//    val placeLatLng = this.geometry.location.latLng
-//    val heading = latLng.sphericalHeading(placeLatLng)
-//    val r = -2f
-//    val x = r * sin(azimuth + heading).toFloat()
-//    val y = 1f
-//    val z = r * cos(azimuth + heading).toFloat()
-//    return Vector3(x, y, z)
-//}
-
 data class Geometry(
     val location: GeometryLocation
 )

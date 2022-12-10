@@ -1,11 +1,15 @@
 package com.grocylist
 
+
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -27,31 +31,11 @@ import retrofit2.Response
 
 
 class FindStoresActivity : AppCompatActivity() {
-    private val TAG: String? = "FindStoresActivityLogTag"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    lateinit var mapFragment: SupportMapFragment
+    private lateinit var mapFragment: SupportMapFragment
     private var map: GoogleMap? = null
     private var currentLocation: Location? = null
     private var places: List<Place>? = null
-    private var placeType: List<String> = listOf(
-//        "bakery",
-//        "bicycle_store",
-//        "book_store",
-//        "clothing_store",
-//        "convenience_store",
-//        "department_store",
-//        "drugstore",
-//        "electronics_store",
-//        "furniture_store",
-//        "hardware_store",
-//        "home_goods_store",
-//        "jewelry_store",
-//        "liquor_store",
-//        "shoe_store",
-//        "shopping_mall",
-//        "store",
-//        "supermarket"
-    )
 
 
     private lateinit var placesService: PlacesService
@@ -74,49 +58,23 @@ class FindStoresActivity : AppCompatActivity() {
             @SuppressLint("MissingPermission")
             override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
                 setUpMaps()
-//                fusedLocationClient.getCurrentLocation(
-//                    Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-//                    object : CancellationToken() {
-//                        override fun onCanceledRequested(p0: OnTokenCanceledListener) =
-//                            CancellationTokenSource().token
-//
-//                        override fun isCancellationRequested() = false
-//                    })
-//                    .addOnSuccessListener { location: Location? ->
-//                        if (location == null)
-//                            Toast.makeText(parent, "Cannot get location.", Toast.LENGTH_SHORT).show()
-//                        else {
-//                            lat = location.latitude
-//                            lon = location.longitude
-//                            mapFragment.getMapAsync {
-//                                it.isMyLocationEnabled = true
-//                                it.setOnMapLoadedCallback {
-//                                    it.moveCamera(
-//                                        CameraUpdateFactory.newLatLngZoom(
-//
-//                                            LatLng(
-//                                                lat,
-//                                                lon
-//                                            ), 12.0f
-//                                        )
-//                                    )
-////                            it.moveCamera(CameraUpdateFactory.newLatLng(LatLng(lat, lon)))
-//                                }
-//                            }
-//                        }
-//
-//                    }
             }
 
             override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                TODO("Not yet implemented")
+                Toast.makeText(this@FindStoresActivity, "Location permission not granted", Toast.LENGTH_SHORT).show()
+                finish()
             }
 
             override fun onPermissionRationaleShouldBeShown(
                 p0: PermissionRequest?,
                 p1: PermissionToken?
             ) {
-                TODO("Not yet implemented")
+
+                Toast.makeText(this@FindStoresActivity, "Location permission not granted", Toast.LENGTH_SHORT).show()
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri: Uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivity(intent)
             }
 
         }).check()
@@ -142,14 +100,6 @@ class FindStoresActivity : AppCompatActivity() {
                 googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos))
                 getNearbyPlaces(it)
             }
-//            googleMap.setOnMarkerClickListener { marker ->
-//                val tag = marker.tag
-//                if (tag !is Place) {
-//                    return@setOnMarkerClickListener false
-//                }
-//                showInfoWindow(tag)
-//                return@setOnMarkerClickListener true
-//            }
             map = googleMap
         }
     }
@@ -160,12 +110,10 @@ class FindStoresActivity : AppCompatActivity() {
             currentLocation = location
             onSuccess(location)
         }.addOnFailureListener {
-            Log.e(TAG, "Could not get location")
         }
     }
 
     private fun getNearbyPlaces(location: Location) {
-//        val apiKey = this.getString(R.string.google_maps_key)
         placesService.nearbyPlaces(
             apiKey = BuildConfig.GOOGLE_MAPS_API_KEY,
             location = "${location.latitude},${location.longitude}",
@@ -174,7 +122,6 @@ class FindStoresActivity : AppCompatActivity() {
         ).enqueue(
             object : Callback<NearbyPlacesResponse> {
                 override fun onFailure(call: Call<NearbyPlacesResponse>, t: Throwable) {
-                    Log.e(TAG, "Failed to get nearby places", t)
                 }
 
                 override fun onResponse(
@@ -182,19 +129,14 @@ class FindStoresActivity : AppCompatActivity() {
                     response: Response<NearbyPlacesResponse>
                 ) {
                     if (!response.isSuccessful) {
-                        Log.e(TAG, "Failed to get nearby places")
                         return
                     }
 
                     places = response.body()!!.results
-//                    this@FindStoresActivity.places?.addAll(tempplaces)
                     addMarkers()
                 }
             }
         )
-
-
-
     }
 
     private fun addMarkers() {
@@ -206,8 +148,6 @@ class FindStoresActivity : AppCompatActivity() {
             )
         }
     }
-
-
 }
 
 

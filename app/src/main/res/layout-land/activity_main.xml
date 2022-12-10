@@ -23,9 +23,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/stock_overview_card"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:transitionName="@string/stock_overview"
                 android:layout_weight="1"
                 app:cardCornerRadius="24dp">
 
@@ -43,7 +44,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="Stock Overview"
+                            android:text="@string/stock_overview"
                             android:textColor="?attr/colorPrimary"
                             android:textSize="24sp"
                             android:textStyle="bold" />
@@ -55,7 +56,8 @@
                             android:layout_margin="6dp"
                             android:scaleType="fitCenter"
                             app:srcCompat="@drawable/ic_baseline_volume_up_24"
-                            tools:ignore="SpeakableTextPresentCheck" />
+                            tools:ignore="SpeakableTextPresentCheck"
+                            android:contentDescription="@string/speaker_icon" />
 
                     </LinearLayout>
 
@@ -65,7 +67,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="&#8226; You have x products in stock with value of xx.xx USD"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -74,7 +75,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="&#8226;x Products are due within next 7 days and x products are overdue"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -87,6 +87,7 @@
                 android:id="@+id/shopping_list_card"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:transitionName="@string/shopping_list"
                 android:layout_margin="16dp"
                 app:cardCornerRadius="24dp">
 
@@ -99,7 +100,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Shopping List"
+                        android:text="@string/shopping_list"
                         android:textColor="?attr/colorPrimary"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -109,7 +110,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="&#8226; You have x items in your shopping list"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 

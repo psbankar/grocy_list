@@ -1,6 +1,34 @@
 <resources>
     <string name="app_name">Grocy List</string>
-
+    <string name="sort_by_name">Sort by Name</string>
+    <string name="name">Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="save">Save</string>
+    <string name="price">Price in $</string>
+    <string name="purchase_date">Purchase Date</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="stock_overview">Stock Overview</string>
+    <string name="speaker_icon">Speaker Icon</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="add_new">Add New</string>
+    <string name="add_to_stock">Add to stock</string>
+    <string name="find_nearest_stores">Find Nearest Stores</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="clear_checked">Clear checked</string>
+    <string name="product_overview">Product Overview</string>
+    <string name="consume">Consume</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add_to_shopping_list">Add to Shopping List</string>
+    <string name="date_format">%1$d-%2$d-%3$d</string>
+    <string name="text1">• %1$d products in stock with value of $%2$.2f</string>
+    <string name="text2">• %1$d Products are due within next 7 days and %2$d products are overdue</string>
+    <string name="text3">• You have %1$d products in your shopping list</string>
+    <string name="item_quantity">%1$s %2$s</string>
+    <string name="overdue">Item overdue %1$d day(s) ago</string>
+    <string name="expiring">Item expiring in %1$d day(s)</string>
+    <string name="price_format">$%1$s</string>
 
     <string-array name="quantity_list">
         <item>gm</item>

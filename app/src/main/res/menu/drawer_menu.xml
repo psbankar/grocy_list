@@ -3,9 +3,9 @@
 
     <item
         android:id="@+id/find_stores"
-        android:title="Find Nearest Stores" />
+        android:title="@string/find_nearest_stores" />
 
     <item
         android:id="@+id/sign_out"
-        android:title="Sign Out" />
+        android:title="@string/sign_out" />
 </menu>

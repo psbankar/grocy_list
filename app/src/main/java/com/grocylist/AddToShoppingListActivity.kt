@@ -2,21 +2,31 @@ package com.grocylist
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.util.*
 
 class AddToShoppingListActivity : AppCompatActivity() {
 
-    lateinit var quantity_spinner: AppCompatSpinner
-    var editMode: Boolean = false
+    private lateinit var quantitySpinner: AppCompatSpinner
+    private var editMode: Boolean = false
+    lateinit var name: EditText
+    private lateinit var qty: EditText
+    lateinit var quantityMetric: String
+    private lateinit var submitFAB: ExtendedFloatingActionButton
+    private lateinit var db: FirebaseFirestore
+    private lateinit var arrayAdapter: ArrayAdapter<CharSequence>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_to_shopping_list)
@@ -25,54 +35,32 @@ class AddToShoppingListActivity : AppCompatActivity() {
             editMode = true
         }
 
-        val name: EditText = findViewById(R.id.item_name_edittext)
-        val qty: EditText = findViewById(R.id.item_qty_edittext)
-        var quantityMetric: String = ""
-        val submitFAB: ExtendedFloatingActionButton = findViewById(R.id.save_fab)
-        val db = Firebase.firestore
-        quantity_spinner = findViewById(R.id.quantity_spinner)
-
-
         supportActionBar?.title = "Add To Shopping List"
 
-        val aa = ArrayAdapter.createFromResource(
-            this,
-            R.array.quantity_list,
-            android.R.layout.simple_spinner_item
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            quantity_spinner.adapter = it
-        }
+        name = findViewById(R.id.item_name_edittext)
+        qty = findViewById(R.id.item_qty_edittext)
+        submitFAB = findViewById(R.id.save_fab)
+        quantitySpinner = findViewById(R.id.quantity_spinner)
+        quantityMetric = ""
+        db = Firebase.firestore
 
 
-        quantity_spinner.onItemSelectedListener = (object : OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                quantityMetric = parent?.getItemAtPosition(position).toString()
-            }
+        initSpinner()
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
-        })
 
         if (editMode) {
             name.setText(intent.getStringExtra("name"))
             qty.setText(intent.getStringExtra("amount"))
-            quantity_spinner.setSelection(aa.getPosition(intent.getStringExtra("qty")))
+            quantitySpinner.setSelection(arrayAdapter.getPosition(intent.getStringExtra("qty")))
         }
+
         submitFAB.setOnClickListener {
 
             if (editMode) {
-                if (name.text.trim().toString().length != 0 && qty.text.toString().length != 0 &&
-                    quantityMetric.length != 0
+                if (name.text.trim().toString().isNotEmpty() && qty.text.toString().isNotEmpty() &&
+                    quantityMetric.isNotEmpty()
                 ) {
-                    db.collection("shopping_list").document(intent.getStringExtra("documentID")!!)
+                    db.collection("data").document(Firebase.auth.currentUser?.uid.toString()).collection("shopping_list").document(intent.getStringExtra("documentID")!!)
                         .update(
                             hashMapOf(
                                 "name" to name.text.trim().toString(),
@@ -86,8 +74,8 @@ class AddToShoppingListActivity : AppCompatActivity() {
                     finish()
                 }
             } else {
-                if (name.text.trim().toString().length != 0 && qty.text.toString().length != 0 &&
-                    quantityMetric.length != 0
+                if (name.text.trim().toString().isNotEmpty() && qty.text.toString().isNotEmpty() &&
+                    quantityMetric.isNotEmpty()
                 ) {
                     val data = hashMapOf(
                         "name" to name.text.trim().toString(),
@@ -95,7 +83,7 @@ class AddToShoppingListActivity : AppCompatActivity() {
                         "qty" to quantityMetric,
                         "checked" to false
                     )
-                    db.collection("shopping_list").add(data).addOnSuccessListener {
+                    db.collection("data").document(Firebase.auth.currentUser?.uid.toString()).collection("shopping_list").add(data).addOnSuccessListener {
                         Toast.makeText(
                             this,
                             "Successfully added ${name.text.trim()}",
@@ -112,5 +100,31 @@ class AddToShoppingListActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun initSpinner() {
+        arrayAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.quantity_list,
+            android.R.layout.simple_spinner_item
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            quantitySpinner.adapter = it
+        }
+
+        quantitySpinner.onItemSelectedListener = (object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                quantityMetric = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        })
     }
 }

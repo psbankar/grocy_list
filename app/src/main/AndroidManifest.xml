@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -19,6 +19,7 @@
         <activity
             android:name=".AddToShoppingListActivity"
             android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -26,6 +27,7 @@
         </activity>
         <activity
             android:name=".ShoppingListActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -33,6 +35,7 @@
         </activity>
         <activity
             android:name=".AddToStockActivity"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustResize"
             android:exported="false">
             <meta-data
@@ -41,6 +44,7 @@
         </activity>
         <activity
             android:name=".StockOverviewActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -56,6 +60,7 @@
 
         <activity
             android:name=".FindStoresActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -63,6 +68,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

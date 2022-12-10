@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -16,17 +17,16 @@ import com.google.firebase.ktx.Firebase
 class ShoppingListAdapter(shoppingListActivity: ShoppingListActivity) :
     RecyclerView.Adapter<ShoppingListAdapter.ShoppingListVH>() {
 
-
-    val db: CollectionReference = Firebase.firestore.collection("shopping_list")
+    private val db: CollectionReference = Firebase.firestore.collection("data").document(Firebase.auth.currentUser?.uid.toString()).collection("shopping_list")
     lateinit var list: MutableList<DocumentSnapshot>
-    val shoppingListActivity: ShoppingListActivity
+    private val shoppingListActivity: ShoppingListActivity
     init {
         loadDB()
         this.shoppingListActivity = shoppingListActivity
     }
 
-    fun loadDB() {
-        db.addSnapshotListener { value, error ->
+    private fun loadDB() {
+        db.addSnapshotListener { value, _ ->
             list = value!!.documents
         }
     }
@@ -46,9 +46,7 @@ class ShoppingListAdapter(shoppingListActivity: ShoppingListActivity) :
 
     override fun onBindViewHolder(holder: ShoppingListVH, position: Int) {
         holder.name.text = list[position].data?.get("name").toString()
-        holder.qty.text = "${list[position].data?.get("amount").toString()} ${
-            list[position].data?.get("qty").toString()
-        }"
+        holder.qty.text = shoppingListActivity.getString(R.string.item_quantity, list[position].data?.get("amount").toString(),list[position].data?.get("qty").toString() )
 
         if (list[position].data?.get("checked") == true) {
             holder.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
@@ -62,16 +60,15 @@ class ShoppingListAdapter(shoppingListActivity: ShoppingListActivity) :
             if (list[position].data?.get("checked") == false) {
                 holder.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 holder.qty.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                Firebase.firestore.collection("shopping_list").document(list[position].id).update(
+                Firebase.firestore.collection("data").document(Firebase.auth.currentUser?.uid.toString()).collection("shopping_list").document(list[position].id).update(
                     mapOf( "checked" to true )
                 )
             } else {
                 holder.name.paintFlags = 0
                 holder.qty.paintFlags = 0
-                Firebase.firestore.collection("shopping_list").document(list[position].id).update(
+                Firebase.firestore.collection("data").document(Firebase.auth.currentUser?.uid.toString()).collection("shopping_list").document(list[position].id).update(
                     mapOf( "checked" to false ))
             }
-            true
         }
 
         holder.card.setOnLongClickListener {
@@ -81,7 +78,6 @@ class ShoppingListAdapter(shoppingListActivity: ShoppingListActivity) :
             i.putExtra("qty", list[position].data?.get("qty").toString())
             i.putExtra("documentID", list[position].id)
             shoppingListActivity.resultLauncher.launch(i)
-//            shoppingListActivity.startActivity(i)
             true
 
         }
@@ -92,7 +88,6 @@ class ShoppingListAdapter(shoppingListActivity: ShoppingListActivity) :
     }
 
     fun clearChecked() {
-
         val temp = list.iterator()
         var c = -1
         while (temp.hasNext()){
@@ -102,11 +97,7 @@ class ShoppingListAdapter(shoppingListActivity: ShoppingListActivity) :
                 temp.remove()
                 item.reference.delete()
                 notifyDataSetChanged()
-//                notifyItemRemoved(c)
             }
-
         }
-
     }
-
 }

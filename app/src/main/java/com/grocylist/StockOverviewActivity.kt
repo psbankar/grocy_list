@@ -2,12 +2,13 @@ package com.grocylist
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -16,7 +17,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 class StockOverviewActivity : AppCompatActivity() {
 
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
-    lateinit var adapter: StockOverviewAdapter
+    private lateinit var adapter: StockOverviewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_overview)
@@ -32,20 +33,16 @@ class StockOverviewActivity : AppCompatActivity() {
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    // There are no request codes
-//                    val data: Intent? = result.data
-//                    openAddToStockActivity()
                     adapter.notifyDataSetChanged()
                 }
             }
 
         fab.setOnClickListener {
-            resultLauncher.launch(Intent(this, AddToStockActivity::class.java))
+            resultLauncher.launch(Intent(this, AddToStockActivity::class.java), ActivityOptionsCompat.makeSceneTransitionAnimation(this, fab, getString(R.string.add_to_stock)))
         }
 
         adapter = StockOverviewAdapter(this)
         recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
-            // Change the durations.
             setDuration(500)
         }
 

@@ -4,10 +4,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/roundedcorners"
     android:paddingHorizontal="10dp">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="4"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -145,18 +150,20 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <Button
             android:layout_margin="16dp"
             android:id="@+id/consume"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/roundedcorners"
             android:fadingEdge="horizontal|vertical"
             android:text="@string/consume" />
@@ -164,9 +171,8 @@
         <Button
             android:layout_margin="16dp"
             android:id="@+id/delete_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/roundedcorners"
             android:backgroundTint="#FF03DAC5"
             android:text="@string/delete" />
@@ -177,27 +183,19 @@
             android:fadingEdge="horizontal|vertical"
             android:layout_margin="16dp"
             android:id="@+id/edit_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/edit" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="horizontal">
-
         <Button
+            android:layout_margin="16dp"
             android:id="@+id/add_to_sl_button"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@drawable/roundedcorners"
             android:text="@string/add_to_shopping_list"
             android:textAlignment="center" />
+
     </LinearLayout>
 
 </LinearLayout>

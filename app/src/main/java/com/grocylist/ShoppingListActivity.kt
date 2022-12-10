@@ -2,23 +2,22 @@ package com.grocylist
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 
 class ShoppingListActivity : AppCompatActivity() {
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
-    lateinit var adapter: ShoppingListAdapter
-    lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ShoppingListAdapter
+    private lateinit var recyclerView: RecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,27 +26,22 @@ class ShoppingListActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Shopping List"
 
-        val db = Firebase.firestore
         val fab: ExtendedFloatingActionButton = findViewById(R.id.shopping_list_fab)
         recyclerView = findViewById(R.id.shopping_recyclerview)
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    // There are no request codes
-                    val data: Intent? = result.data
-//                    openAddToStockActivity()
+                    adapter.notifyDataSetChanged()
                 }
             }
 
         fab.setOnClickListener {
-
-            resultLauncher.launch(Intent(this, AddToShoppingListActivity::class.java))
+            resultLauncher.launch(Intent(this, AddToShoppingListActivity::class.java), ActivityOptionsCompat.makeSceneTransitionAnimation(this, fab, getString(R.string.add_new)))
         }
 
         adapter = ShoppingListAdapter(this)
-        recyclerView.adapter = ScaleInAnimationAdapter(adapter!!).apply {
+        recyclerView.adapter = ScaleInAnimationAdapter(adapter).apply {
             setDuration(500)
-
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
